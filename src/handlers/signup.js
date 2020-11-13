@@ -1,4 +1,5 @@
 const fetch = require("node-fetch")
+const bcrypt = require("bcryptjs")
 
 const HASURA_OPERATION = `
 mutation signUp ($names: String!, $username: String!, $password: String!){
@@ -32,8 +33,6 @@ const execute = async (variables, reqHeaders) => {
   );
 
   return await fetchResponse.json();
-  console.log('DEBUG: ', data);
-  return data;
 };
   
 
@@ -45,9 +44,10 @@ const handler = async (req, res) => {
   const { names, username, password } = req.body.input;
 
   // run some business logic
-
+  let hashPassword = await bcrypt.hash(password, 10);
+  
   // execute the Hasura operation
-  const { data, errors } = await execute({ names, username, password }, req.headers);
+  const { data, errors } = await execute({ names, username, password: hashPassword }, req.headers);
 
   // if Hasura operation errors, then throw error
   if (errors) {
@@ -56,7 +56,9 @@ const handler = async (req, res) => {
 
   // success
   return res.status(201).json({
-    ...data.insert_user_one
+    id: data?.insert_user_one?.id,
+    username: data?.insert_user_one?.username,
+    names: data?.insert_user_one?.names
   })
 
 };
