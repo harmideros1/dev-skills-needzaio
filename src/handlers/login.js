@@ -30,7 +30,6 @@ const execute = async (variables, reqHeaders) => {
 
 const handler = async (req, res) => {
 
-    console.log( req.body );
     // get request input
     const { username, password } = req.body.input;
     
