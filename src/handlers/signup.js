@@ -35,7 +35,7 @@ const execute = async (variables, reqHeaders) => {
   
 
 // Request Handler
-export const handler = async (req, res) => {
+const handler = async (req, res) => {
 
   // get request input
   const { names, username, password } = req.body.input;
@@ -45,14 +45,8 @@ export const handler = async (req, res) => {
   // execute the Hasura operation
   const { data, errors } = await execute({ names, username, password }, req.headers);
 
-  console.log("=============");
-  console.log(data)
-  console.log("=============");
-  console.log(errors)
-
   // if Hasura operation errors, then throw error
   if (errors) {
-    console.log("Hay errores amiko");
     return res.status(400).json({message: errors[0].message})
   }
 
@@ -62,3 +56,6 @@ export const handler = async (req, res) => {
   })
 
 };
+
+
+module.exports = { handler }
