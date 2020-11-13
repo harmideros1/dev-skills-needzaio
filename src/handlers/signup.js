@@ -17,12 +17,13 @@ mutation signUp ($names: String!, $username: String!, $password: String!){
 
 // execute the parent operation in Hasura
 const execute = async (variables, reqHeaders) => {
-  const api_url = process.env.HASURA_BASE_URL || "http://localhost:8080/v1/graphql"
+  const api_url = process.env.HASURA_BASE_URL || "https://fine-koi-82.hasura.app/v1/graphql"
+  console.log("api_url: ",  api_url);
   const fetchResponse = await fetch(
     api_url,
     {
       method: 'POST',
-      headers: reqHeaders || {},
+      headers: {},
       body: JSON.stringify({
         query: HASURA_OPERATION,
         variables
@@ -30,7 +31,6 @@ const execute = async (variables, reqHeaders) => {
     }
   );
 
-  console.log("api_url: ",  api_url);
   return await fetchResponse.json();
   console.log('DEBUG: ', data);
   return data;
@@ -40,6 +40,7 @@ const execute = async (variables, reqHeaders) => {
 // Request Handler
 const handler = async (req, res) => {
 
+  console.log("HANDLING");
   // get request input
   const { names, username, password } = req.body.input;
 
