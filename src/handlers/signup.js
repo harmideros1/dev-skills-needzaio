@@ -17,8 +17,9 @@ mutation signUp ($names: String!, $username: String!, $password: String!){
 
 // execute the parent operation in Hasura
 const execute = async (variables, reqHeaders) => {
+  const api_url = process.env.HASURA_BASE_URL || "http://localhost:8080/v1/graphql"
   const fetchResponse = await fetch(
-    "http://localhost:8080/v1/graphql",
+    api_url,
     {
       method: 'POST',
       headers: reqHeaders || {},
@@ -28,6 +29,8 @@ const execute = async (variables, reqHeaders) => {
       })
     }
   );
+
+  console.log("api_url: ",  api_url);
   return await fetchResponse.json();
   console.log('DEBUG: ', data);
   return data;
