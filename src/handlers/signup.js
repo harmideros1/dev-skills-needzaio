@@ -39,13 +39,12 @@ const execute = async (variables, reqHeaders) => {
 // Request Handler
 const handler = async (req, res) => {
 
-  console.log("HANDLING");
   // get request input
   const { names, username, password } = req.body.input;
 
   // run some business logic
   let hashPassword = await bcrypt.hash(password, 10);
-  
+
   // execute the Hasura operation
   const { data, errors } = await execute({ names, username, password: hashPassword }, req.headers);
 
@@ -56,9 +55,9 @@ const handler = async (req, res) => {
 
   // success
   return res.status(201).json({
-    id: data?.insert_user_one?.id,
-    username: data?.insert_user_one?.username,
-    names: data?.insert_user_one?.names
+    id: data.insert_user_one.id,
+    username: data.insert_user_one.username,
+    names: data.insert_user_one.names
   })
 
 };
