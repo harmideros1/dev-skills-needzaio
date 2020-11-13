@@ -31,7 +31,7 @@ mutation signUp{
 
 -> LogIn Mutation
 
-mutation {
+mutation LogIn{
   logIn(username:"jhondoe", password:"JDoe1*"){
     granted
   }
